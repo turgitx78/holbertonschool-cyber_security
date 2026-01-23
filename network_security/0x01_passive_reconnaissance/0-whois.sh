@@ -1,22 +1,2 @@
 #!/bin/bash
-whois "$1" | awk -F': ' '
-BEGIN { 
-    OFS="," 
-}
-/^(Registrant|Admin|Tech) (Name|Organization|Street|City|State\/Province|Postal Code|Country|Phone|Fax|Email)/ {
-    field = $1
-    value = $2
-    gsub(/^[ \t]+|[ \t]+$/, "", value)
-    
-    if (field ~ /Street$/) {
-        print field "," value " "
-    } else if (field ~ /Phone$/) {
-        print field "," value
-        print field " Ext:,"
-    } else if (field ~ /Fax$/) {
-        print field "," value
-        print field " Ext:,"
-    } else {
-        print field "," value
-    }
-}' | tr -d '\r' | awk 'NR > 1 { print prev } { prev = $0 } END { printf "%s", prev }' > "$1.csv"
+whois "$1" | awk -F": " "/^(Registrant|Admin|Tech) (Name|Organization|Street|City|State\/Province|Postal Code|Country|Phone|Fax|Email)/ {f=\$1; v=\$2; gsub(/^[ \t]+|[ \t]+$/, \"\", v); if (f ~ /Street$/) print f \",\" v \" \"; else if (f ~ /Phone$/ || f ~ /Fax$/) {print f \",\" v; print f \" Ext:,\"} else print f \",\" v}" | tr -d "\r" | awk "NR > 1 { print prev } { prev = \$0 } END { printf \"%s\", prev }" > "$1.csv"
