@@ -1,35 +1,36 @@
 # Passive Reconnaissance Report: holbertonschool.com
 
-## 1. Domain Overview
-- **Domain:** holbertonschool.com
-- **Primary Scope:** Education / Technology training
+## 1. Executive Summary
+This report outlines the findings of a passive reconnaissance exercise performed on the domain **holbertonschool.com** using Shodan. The objective was to identify infrastructure details, including IP ranges, hosting providers, and the technology stack, without direct interaction with the target systems.
 
-## 2. IP Ranges & Infrastructure
-Shodan kəşfiyyatı nəticəsində müəyyən edilmiş əsas IP intervalları və hostinq provayderləri:
+## 2. IP Ranges and Infrastructure
+Based on Shodan's indexed data, the following IP addresses and hosting environments were identified:
 
-| Asset / Service | IP Address / Range | Provider |
-|-----------------|--------------------|----------|
-| Main Website    | 75.2.70.75         | Amazon Data Services |
-| Redirection     | 99.83.190.102      | Amazon Data Services |
-| API / Subdomains| 54.0.0.0/8         | AWS (Amazon Web Services) |
-| Webflow Hosting | 151.139.128.10     | StackPath (Highwinds) |
+| Asset / Hostname | IP Address | Hosting Provider | Location |
+|------------------|------------|------------------|----------|
+| holbertonschool.com | 75.2.70.75 | Amazon.com (AWS) | USA |
+| holbertonschool.com | 99.83.190.102 | Amazon.com (AWS) | USA |
+| Various Subdomains | 151.139.128.10 | StackPath (Highwinds) | USA |
+| API / Internal Services | 54.0.0.0/8 | Amazon Data Services | Global |
 
-## 3. Technologies & Frameworks
-Alt domenlərdə və əsas serverlərdə istifadə olunan texnologiyalar:
+**Key Observation:** The infrastructure is heavily decentralized across Cloud Service Providers (CSPs), primarily leveraging Amazon Web Services (AWS) for core routing and Webflow/StackPath for frontend delivery.
 
-### Web Servers & CDNs
-- **Nginx:** Çox vaxt proksi və ya əsas server kimi istifadə olunur.
-- **Amazon CloudFront:** Statik kontentin paylanması (CDN) üçün.
-- **Webflow:** Əsas səhifənin dizaynı və hostinqi üçün.
+## 3. Technologies and Frameworks
+The following technologies were detected through Shodan's banner grabbing and header analysis:
 
-### Frameworks & Tools
-- **Ruby on Rails:** Bəzi daxili tətbiqlər və platformalar üçün.
-- **React.js:** Front-end interfeysləri üçün.
-- **Google Workspace:** E-poçt və daxili əməliyyatlar (MX qeydləri ilə təsdiqlənmişdir).
+### Web Infrastructure
+* **Web Server:** Nginx (Multiple versions detected as reverse proxies)
+* **Content Delivery Network (CDN):** Amazon CloudFront, StackPath
+* **CMS:** Webflow (Used for the main marketing site)
 
-### Security & Headers
-- **HSTS:** HTTPS bağlantısını məcburi etmək üçün.
-- **Let's Encrypt / Amazon SSL:** Sertifikat idarəetməsi üçün.
+### Application Stack
+* **Frameworks:** Ruby on Rails (Identified on application-specific subdomains)
+* **JavaScript Libraries:** React.js, jQuery
+* **Email Suite:** Google Workspace (Confirmed via MX records: `aspmx.l.google.com`)
 
-## 4. Summary of Findings
-Holberton School-un infrastrukturu yüksək dərəcədə bulud (Cloud) texnologiyalarına əsaslanır. Əsasən AWS (Amazon Web Services) və Webflow hostinq həllərindən istifadə edilir. Passiv kəşfiyyat zamanı birbaşa kritik boşluq aşkar edilməmişdir, lakin çoxlu sayda alt domenin mövcudluğu hücum səthinin (attack surface) geniş olduğunu göstərir.
+### Security Posture
+* **SSL/TLS:** Certificates issued by Amazon and Let's Encrypt.
+* **Security Headers:** Strict-Transport-Security (HSTS) is consistently implemented on primary endpoints.
+
+## 4. Conclusion
+The reconnaissance reveals a robust, cloud-native infrastructure. The use of managed services like AWS and Webflow reduces the direct server-side attack surface. However, the extensive list of subdomains and the use of multiple third-party integrations suggest a broad external footprint that requires continuous monitoring.
