@@ -1,10 +1,8 @@
 #!/bin/bash
-# 1-xor_decoder.sh
 
-s="${1#\{xor\}}"
-b=$(echo "$s" | base64 -d | od -An -t u1)
-for c in $b; do
-  printf "\\x%x" "$((c ^ 0x55))"
-done
-echo
+# Hash-in başındakı {xor} hissəsini təmizləyirik
+input_hash=$(echo "$1" | sed 's/^{xor}//')
 
+# Base64-dən çıxarırıq və hər simvolu ASCII 95 (_) ilə XOR edirik
+echo "$input_hash" | base64 -d | perl -pe 's/./$_ ^ "_" /ge'
+echo ""
