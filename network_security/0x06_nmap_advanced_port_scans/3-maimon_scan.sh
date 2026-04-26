@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo nmap -sM -p http,https,ftp,ssh,telnet -v "$1"
+sudo nmap -sM -vv -phttp,https,ftp,ssh,telnet $1
